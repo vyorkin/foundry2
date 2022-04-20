@@ -7,6 +7,6 @@ contract ContractTest is DSTest {
     function setUp() public {}
 
     function testExample() public {
-        assertTrue(true);
+        assertTrue(false);
     }
 }
