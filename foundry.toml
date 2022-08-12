@@ -1,10 +1,10 @@
-[default]
+[profile.default]
 src = 'src'
 out = 'out'
 libs = ['lib']
 gas_reports = ["*"]
 
-[release]
+[profile.release]
 optimizer = true
 optimizer_runs = 20000
 

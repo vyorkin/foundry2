@@ -1,15 +1,13 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.13;
+pragma solidity ^0.8.16;
 
-import "ds-test/test.sol";
-import "forge-std/Test.sol";
-import "forge-std/Vm.sol";
-import "../../forge/Storage.sol";
+import {stdStorage, StdStorage, Test} from "forge-std/Test.sol";
+import {Storage, Foo} from "../../forge/Storage.sol";
 
 contract StdStorageTest is Test {
     using stdStorage for StdStorage;
 
-    Storage s;
+    Storage private s;
 
     function setUp() public {
         s = new Storage();
@@ -23,5 +21,18 @@ contract StdStorageTest is Test {
     function testWriteExists() public {
         stdstore.target(address(s)).sig("exists()").checked_write(100);
         assertEq(s.exists(), 100);
+    }
+
+    function testWriteStruct() public {
+        stdstore
+            .target(address(s))
+            .sig(s.foos.selector)
+            .with_key(1)
+            .depth(1)
+            .checked_write(99);
+
+        (, uint256 y, ) = s.foos(1);
+
+        assertEq(y, 99);
     }
 }

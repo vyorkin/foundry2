@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.13;
+pragma solidity ^0.8.16;
 
 // gas optimised implementation of the ERC721 standard
 import "solmate/tokens/ERC721.sol";
