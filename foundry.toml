@@ -3,6 +3,7 @@ src = 'src'
 out = 'out'
 libs = ['lib']
 gas_reports = ["*"]
+ffi = true
 
 [profile.release]
 optimizer = true
