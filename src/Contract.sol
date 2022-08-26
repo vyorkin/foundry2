@@ -33,7 +33,85 @@ contract Baz {
 
 error Failed(string name);
 
+// The destination address is calculated as the
+// rightmost 20 bytes (160 bits) of the
+// Keccak-256 hash of the rlp encoding of the
+// sender address followed by its nonce:
+
+// address = keccak256(rlp([sender_address,sender_nonce]))[12:]
+
+// create(v, o, s)
+// v - value in wei to send to the new account
+// o - bytes offset in the memory in bytes
+//     (the initialization code for the new account/contract)
+// s - size of the initialization code that needs to be copied
+// returns: address of the deployed contract
+//          or 0 if the deployment failed
+
+contract Proxy {
+    event Deploy(address);
+
+    function deploy(bytes memory _code)
+        external
+        payable
+        returns (address addr)
+    {
+        assembly {
+            addr := create(callvalue(), add(_code, 0x20), mload(_code))
+            //  ^ msg.value          ^                      ^ size of the code is stored at first 32 bytes
+            //                       |
+            //         actual code starts at 32 bytes
+        }
+        require(addr != address(0), "deploy failed");
+
+        emit Deploy(addr);
+    }
+
+    function execute(address _target, bytes memory _data) external payable {
+        (bool success, ) = _target.call{value: msg.value}(_data);
+        require(success, "execute failed");
+    }
+}
+
+contract Helper {
+    function getFooBytecode() external pure returns (bytes memory) {
+        bytes memory bytecode = type(Foo).creationCode;
+        return bytecode;
+    }
+
+    function getBazBytecode(
+        uint256 _quux,
+        bool _corge,
+        string memory _grault
+    ) external pure returns (bytes memory) {
+        bytes memory bytecode = type(Baz).creationCode;
+        bytes memory result = abi.encodePacked(
+            bytecode,
+            abi.encode(_quux, _corge, _grault)
+        );
+        return result;
+    }
+
+    function getFooCalldata() external pure returns (bytes memory) {
+        return abi.encodeWithSignature("bar()");
+    }
+
+    function getBazCalldata(uint256 _x) external pure returns (bytes memory) {
+        return abi.encodeWithSignature("qux(uint256)", _x);
+    }
+
+    fallback() external payable {}
+}
+
+// new_address = hash(0xFF, sender, salt, bytecode)
+//
+// 0xFF - a constant that prevents collisions with CREATE
+// sender - the sender’s own address
+// salt - an arbitrary value provided by the sender
+// bytecode - the to-be-deployed contract’s bytecode
+
 // create2(v, p, n, s)
+//
 // v - amount of wei sent
 // p - the start of the initCode
 // n - length of the initCode
@@ -42,8 +120,8 @@ error Failed(string name);
 contract Factory {
     event Deployed(address addr, bytes32 salt);
 
-    function deployFoo() public returns (address addr) {
-        bytes32 salt = keccak256(abi.encodePacked("poebat"));
+    function deployFoo2() public returns (address addr) {
+        bytes32 salt = keccak256(abi.encodePacked("whatever_you_want"));
         bytes memory bytecode = type(Foo).creationCode;
         assembly {
             // bytecode is a dynamic bytes array,
@@ -66,11 +144,11 @@ contract Factory {
         emit Deployed(addr, salt);
     }
 
-    function deployBaz() public returns (address addr) {
+    function deployBaz2() public returns (address addr) {
         // Constructor args
         uint256 quux = 100;
         bool corge = true;
-        string memory grault = "pohuyu";
+        string memory grault = "pohuy";
 
         bytes32 salt = keccak256(abi.encodePacked(quux, corge, grault));
 

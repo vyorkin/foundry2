@@ -2,8 +2,8 @@
 src = 'src'
 out = 'out'
 libs = ['lib']
-gas_reports = ["*"]
 ffi = true
+gas_reports = ["GasGolf"]
 
 [profile.release]
 optimizer = true
