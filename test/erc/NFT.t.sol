@@ -4,7 +4,7 @@ pragma solidity ^0.8.16;
 import "ds-test/test.sol";
 import "forge-std/Test.sol";
 import "forge-std/Vm.sol";
-import "../NFT.sol";
+import "../../src/erc/NFT.sol";
 
 contract NFTTest is DSTest {
     using stdStorage for StdStorage;

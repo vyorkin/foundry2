@@ -3,8 +3,8 @@ pragma solidity ^0.8.16;
 
 import {Test} from "forge-std/test.sol";
 import {console2} from "forge-std/console2.sol";
-import {EnglishAuction} from "../EnglishAuction.sol";
-import {NFT} from "../NFT.sol";
+import {EnglishAuction} from "../../src/concept/EnglishAuction.sol";
+import {NFT} from "../../src/erc/NFT.sol";
 
 contract EnglishAuctionTest is Test {
     NFT private nft;

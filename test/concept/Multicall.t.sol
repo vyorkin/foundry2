@@ -3,7 +3,7 @@ pragma solidity ^0.8.16;
 
 import {DSTest} from "ds-test/test.sol";
 import {console2} from "forge-std/console2.sol";
-import {Multicall} from "../Multicall.sol";
+import {Multicall} from "../../src/concept/Multicall.sol";
 
 contract Callable {
     function fn1() external view returns (uint256, uint256) {

@@ -4,8 +4,8 @@ pragma solidity ^0.8.16;
 import {ECDSA} from "openzeppelin/utils/cryptography/ECDSA.sol";
 import {Test} from "forge-std/Test.sol";
 import {console2} from "forge-std/console2.sol";
-import {MultiSigWallet} from "../MultiSigWallet.sol";
-import {MultiSigWalletFixed} from "../MultiSigWalletFixed.sol";
+import {MultiSigWallet} from "../../src/concept/MultiSigWallet.sol";
+import {MultiSigWalletFixed} from "../../src/concept/MultiSigWalletFixed.sol";
 
 contract MultiSigWalletTest is Test {
     using ECDSA for bytes32;

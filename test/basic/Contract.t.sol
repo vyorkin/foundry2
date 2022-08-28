@@ -3,7 +3,7 @@ pragma solidity ^0.8.16;
 
 import {DSTest} from "ds-test/test.sol";
 import {console2} from "forge-std/console2.sol";
-import {Proxy, Factory, Helper, Foo, Baz} from "../Contract.sol";
+import {Proxy, Factory, Helper, Foo, Baz} from "../../src/basic/Contract.sol";
 
 contract ContractTest is DSTest {
     Helper private helper;

@@ -3,7 +3,7 @@ pragma solidity ^0.8.16;
 
 import {DSTest} from "ds-test/test.sol";
 import {console2} from "forge-std/console2.sol";
-import {Signature} from "../Signature.sol";
+import {Signature} from "../../src/basic/Signature.sol";
 
 contract SignatureTest is DSTest {
     Signature private signature;

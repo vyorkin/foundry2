@@ -2,7 +2,7 @@
 pragma solidity ^0.8.16;
 
 import {stdStorage, StdStorage, Test} from "forge-std/Test.sol";
-import {Storage, Foo} from "../../forge/Storage.sol";
+import {Storage, Foo} from "../../src/forge/Storage.sol";
 
 contract StdStorageTest is Test {
     using stdStorage for StdStorage;

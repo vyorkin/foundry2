@@ -2,7 +2,7 @@
 pragma solidity ^0.8.16;
 
 import "ds-test/test.sol";
-import "../OwnerUpOnly.sol";
+import "../../src/basic/OwnerUpOnly.sol";
 
 interface CheatCodes {
     function prank(address) external;

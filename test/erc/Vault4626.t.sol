@@ -4,7 +4,7 @@ pragma solidity ^0.8.16;
 import {Test} from "forge-std/Test.sol";
 import {console2} from "forge-std/console2.sol";
 import {MockERC20} from "solmate/test/utils/mocks/MockERC20.sol";
-import {Vault4626} from "../Vault4626.sol";
+import {Vault4626} from "../../src/erc/Vault4626.sol";
 
 contract Vault4626Test is Test {
     MockERC20 private underlying;

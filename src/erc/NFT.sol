@@ -4,8 +4,8 @@ pragma solidity ^0.8.16;
 // gas optimised implementation of the ERC721 standard
 import "solmate/tokens/ERC721.sol";
 
-import "openzeppelin/utils/Strings.sol";
-import "openzeppelin/access/Ownable.sol";
+import {Strings} from "openzeppelin/utils/Strings.sol";
+import {Ownable} from "openzeppelin/access/Ownable.sol";
 
 error MintPriceNotPaid();
 error MaxSupply();

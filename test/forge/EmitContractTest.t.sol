@@ -2,7 +2,7 @@
 pragma solidity ^0.8.16;
 
 import "ds-test/test.sol";
-import "../ExpectEmit.sol";
+import "../../src/basic/ExpectEmit.sol";
 
 interface CheatCodes {
     function expectEmit(

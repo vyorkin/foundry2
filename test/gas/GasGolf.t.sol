@@ -2,7 +2,7 @@
 pragma solidity ^0.8.16;
 
 import {Test} from "forge-std/Test.sol";
-import {GasGolf} from "../GasGolf.sol";
+import {GasGolf} from "../../src/gas/GasGolf.sol";
 
 contract GasGolfTest is Test {
     GasGolf private gasGolf;

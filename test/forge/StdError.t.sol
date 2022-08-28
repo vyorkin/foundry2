@@ -4,7 +4,7 @@ pragma solidity ^0.8.16;
 import "ds-test/test.sol";
 import "forge-std/Test.sol";
 import "forge-std/Vm.sol";
-import "../../forge/Error.sol";
+import "../../src/forge/Error.sol";
 
 // stdError is a helper contract for errors and reverts,
 // it provides all compiler builtin errors

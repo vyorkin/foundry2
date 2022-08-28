@@ -2,7 +2,7 @@
 pragma solidity ^0.8.16;
 
 import "ds-test/test.sol";
-import "../Safe.sol";
+import "../../src/basic/Safe.sol";
 
 interface CheatCodes {
     function assume(bool) external;
