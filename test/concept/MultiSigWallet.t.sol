@@ -19,7 +19,8 @@ contract MultiSigWalletTest is Test {
     address private immutable charlie = vm.addr(3);
 
     MultiSigWallet private wallet;
-    MultiSigWalletFixed private walletFixed;
+    MultiSigWalletFixed private walletFixed1;
+    MultiSigWalletFixed private walletFixed2;
 
     function setUp() public {
         vm.label(alice, "alice");
@@ -36,10 +37,12 @@ contract MultiSigWalletTest is Test {
 
         address[2] memory owners = [alice, bob];
         wallet = new MultiSigWallet(owners);
-        walletFixed = new MultiSigWalletFixed(owners);
+        walletFixed1 = new MultiSigWalletFixed(owners);
+        walletFixed2 = new MultiSigWalletFixed(owners);
 
         vm.label(address(wallet), "MultiSigWallet");
-        vm.label(address(walletFixed), "MultiSigWalletFixed");
+        vm.label(address(walletFixed1), "MultiSigWalletFixed-1");
+        vm.label(address(walletFixed2), "MultiSigWalletFixed-2");
 
         vm.prank(alice);
         wallet.deposit{value: 9 ether}();
@@ -48,7 +51,9 @@ contract MultiSigWalletTest is Test {
         wallet.deposit{value: 9 ether}();
 
         vm.prank(charlie);
-        walletFixed.deposit{value: 100 ether}();
+        walletFixed1.deposit{value: 50 ether}();
+        vm.prank(charlie);
+        walletFixed2.deposit{value: 50 ether}();
     }
 
     function testReplay() public {
@@ -71,7 +76,7 @@ contract MultiSigWalletTest is Test {
     }
 
     function testReplayFixed() public {
-        bytes32 hash = walletFixed.getTxHash(alice, 4 ether, 1);
+        bytes32 hash = walletFixed1.getTxHash(alice, 4 ether, 1);
         bytes32 signedHash = hash.toEthSignedMessageHash();
 
         (uint8 va, bytes32 ra, bytes32 sa) = vm.sign(alicePk, signedHash);
@@ -82,14 +87,23 @@ contract MultiSigWalletTest is Test {
 
         bytes[2] memory sigs = [aliceSig, bobSig];
 
-        walletFixed.transfer(alice, 4 ether, 1, sigs); // tx 1
+        walletFixed1.transfer(alice, 4 ether, 1, sigs); // tx 1
         vm.expectRevert(
             abi.encodeWithSelector(
                 MultiSigWalletFixed.ReplaySigError.selector,
                 hash
             )
         );
-        walletFixed.transfer(alice, 4 ether, 1, sigs); // replay tx 1
+        walletFixed1.transfer(alice, 4 ether, 1, sigs); // replay tx 1 (same wallet)
         assertEq(alice.balance, 5 ether);
+
+        vm.expectRevert(
+            abi.encodeWithSelector(
+                MultiSigWalletFixed.InvalidSigError.selector,
+                0x68855A4Bc8FDF8C5e0e61AE741633e99dD3C6692,
+                alice
+            )
+        );
+        walletFixed2.transfer(alice, 4 ether, 1, sigs); // replay tx 1 (diff wallet)
     }
 }

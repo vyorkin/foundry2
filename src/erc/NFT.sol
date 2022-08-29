@@ -5,6 +5,7 @@ pragma solidity ^0.8.16;
 import "solmate/tokens/ERC721.sol";
 
 import {Strings} from "openzeppelin/utils/Strings.sol";
+import {Counters} from "openzeppelin/utils/Counters.sol";
 import {Ownable} from "openzeppelin/access/Ownable.sol";
 
 error MintPriceNotPaid();
@@ -14,9 +15,10 @@ error WithdrawTransfer();
 
 contract NFT is ERC721, Ownable {
     using Strings for uint256;
+    using Counters for Counters.Counter;
 
     string public baseURI;
-    uint256 public currentTokenId;
+    Counters.Counter public currentTokenId;
 
     uint256 public constant TOTAL_SUPPLY = 10_000;
     uint256 public constant MINT_PRICE = 0.08 ether;
@@ -33,7 +35,8 @@ contract NFT is ERC721, Ownable {
         if (msg.value != MINT_PRICE) {
             revert MintPriceNotPaid();
         }
-        uint256 newItemId = ++currentTokenId;
+        currentTokenId.increment();
+        uint256 newItemId = currentTokenId.current();
         if (newItemId > TOTAL_SUPPLY) {
             revert MaxSupply();
         }

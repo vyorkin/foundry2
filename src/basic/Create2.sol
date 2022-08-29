@@ -4,6 +4,8 @@ pragma solidity ^0.8.16;
 contract Foo {
     event Bar();
 
+    constructor() payable {}
+
     function bar() public {
         emit Bar();
     }
@@ -49,7 +51,7 @@ error Failed(string name);
 //          or 0 if the deployment failed
 
 contract Proxy {
-    event Deploy(address);
+    event Deploy(address indexed addr);
 
     function deploy(bytes memory _code)
         external
@@ -58,9 +60,9 @@ contract Proxy {
     {
         assembly {
             addr := create(callvalue(), add(_code, 0x20), mload(_code))
-            //  ^ msg.value          ^                      ^ size of the code is stored at first 32 bytes
-            //                       |
-            //         actual code starts at 32 bytes
+            //             ^ msg.value       ^             ^ size of the code is stored at first 32 bytes
+            //                               |
+            //               actual code starts at 32 bytes
         }
         require(addr != address(0), "deploy failed");
 
@@ -118,7 +120,7 @@ contract Helper {
 // s - the salt (256-bit value)
 
 contract Factory {
-    event Deployed(address addr, bytes32 salt);
+    event Deployed(address indexed addr, bytes32 salt);
 
     function deployFoo2() public returns (address addr) {
         bytes32 salt = keccak256(abi.encodePacked("whatever_you_want"));

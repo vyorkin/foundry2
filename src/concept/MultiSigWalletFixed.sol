@@ -42,6 +42,10 @@ contract MultiSigWalletFixed {
         uint256 _amount,
         uint256 _nonce
     ) public view returns (bytes32) {
+        // If we didn't include address(this) into tx's hash then
+        // it would be possible to use the same signature for another wallet
+
+        // return keccak256(abi.encodePacked(_to, _amount, _nonce));
         return keccak256(abi.encodePacked(address(this), _to, _amount, _nonce));
     }
 
