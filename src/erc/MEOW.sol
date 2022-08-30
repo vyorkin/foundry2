@@ -17,8 +17,8 @@ contract MEOW is ERC721, ERC721Enumerable, ERC721URIStorage {
 
     constructor() ERC721("Meow Meow", "MEOW") {}
 
-    function mint(address to, string memory uri) public {
-        uint256 tokenId = _tokenId.current();
+    function mint(address to, string memory uri) public returns (uint256 tokenId) {
+        tokenId = _tokenId.current();
         if (tokenId > MAX_SUPPLY) {
             revert MaxSupplyError();
         }
