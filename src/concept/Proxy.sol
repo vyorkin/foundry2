@@ -2,17 +2,24 @@
 pragma solidity ^0.8.16;
 
 contract Proxy {
-    address private impl;
+    // Constants don't occupy memory slots,
+    // the compiler replaces their occurences with values
+    bytes32 private constant _IMPL_SLOT =
+        bytes32(uint256(keccak256("eip1967.proxy.implementation")) - 1);
 
     function setImpl(address _impl) public {
-        impl = _impl;
+        StorageSlot.setAddressAt(_IMPL_SLOT, _impl);
     }
 
     function getImpl() public view returns (address) {
-        return impl;
+        return StorageSlot.getAddressAt(_IMPL_SLOT);
     }
 
     fallback() external {
+        _delegate(StorageSlot.getAddressAt(_IMPL_SLOT));
+    }
+
+    function _delegate(address _impl) internal virtual {
         // We're not using the Solidity's delegatecall because we want the
         // Proxy contract to return whatever was returned from the
         // callee and we don’t know return data type in advance.
@@ -35,12 +42,7 @@ contract Proxy {
                 // How much gas the implementation contract is
                 // allowed to spend -- "go ahead and spend all gas left".
                 gas(),
-                // The .slot is a Solidity feature allowing us to get the
-                // slot address of a state variable. So here we read the
-                // value at impl.slot address. We need to do that since Yul
-                // doesn't do anything with state variables -- state
-                // variables is a syntactic sugar of Solidity.
-                sload(impl.slot),
+                _impl,
                 ptr,
                 calldatasize(),
                 // These 2 arguments define where in memory to store return data:
