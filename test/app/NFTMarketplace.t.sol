@@ -93,7 +93,7 @@ contract NFTMarketplaceTest is Test {
     function testCancel() public {
         vm.startPrank(alice);
         marketplace.list(address(meow), cat1, 1 ether);
-        vm.expectEmit(true, true, true,true);
+        vm.expectEmit(true, true, true, true);
         emit Canceled(alice, address(meow), cat1);
         marketplace.cancel(address(meow), cat1);
         vm.stopPrank();
