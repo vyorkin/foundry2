@@ -3,7 +3,6 @@ src = 'src'
 out = 'out'
 libs = ['lib']
 ffi = true
-gas_reports = ["GasGolf"]
 
 [profile.release]
 optimizer = true

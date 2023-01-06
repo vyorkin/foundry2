@@ -10,7 +10,7 @@ contract GasGolfTest is Test {
 
     function setUp() public {
         gasGolf = new GasGolf();
-        xs = [1, 2, 3, 4, 5, 100];
+        xs = [1, 2, 3, 4, 5, 5, 100];
     }
 
     function testGasGolf() public {

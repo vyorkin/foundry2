@@ -72,7 +72,7 @@ contract Create2Test is Test {
 
     function testDeployFoo2() public {
         vm.expectEmit(true, false, false, false);
-        emit Deployed(0x9e76A1Ff921c6960EECE402Fd3253a35Ef824C22, 0x7e7bffad144832c363f86604341901facbe3f7d8d833339e4bf070654d1a1b39);
+        emit Deployed(0xAA85143e8Ad9Abfdb07e1e1d87aad4d0a534043F, 0x7e7bffad144832c363f86604341901facbe3f7d8d833339e4bf070654d1a1b39);
         factory.deployFoo2();
     }
 

@@ -2,7 +2,7 @@
 pragma solidity ^0.8.16;
 
 // gas optimised implementation of the ERC721 standard
-import "solmate/tokens/ERC721.sol";
+import {ERC721} from "solmate/tokens/ERC721.sol";
 
 import {Strings} from "openzeppelin/utils/Strings.sol";
 import {Counters} from "openzeppelin/utils/Counters.sol";
